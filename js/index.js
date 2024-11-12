@@ -1,4 +1,5 @@
 const wrapper = document.querySelector('#wrapper');
+const button = document.querySelector("#button");
 
 function createBlock(value) {
     return `
@@ -116,3 +117,25 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Request to single post completed.");
         });
 });
+
+button && button.addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch("https://jsonplaceholder.typicode.com/posts/1")
+    .then(response => {
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error("API not found for single post");
+    })
+    .then(data => {
+        let card = createBlock(data); 
+        wrapper.innerHTML += card;
+    })
+    .catch(err => {
+        console.error(err);
+    })
+    .finally(() => {
+        console.log("Request to single post completed.");
+    });
+
+})
